@@ -19,3 +19,36 @@ Response headers send information from server to client
 Content-Type header -> format of the request/response body such as application/json
 
 Accept header -> It tells the server which response format the client expects
+
+CRUD Operations -> CRUD operation represent the complete life cycle of data manuplication 
+of API using HTTP methods.
+C   Create  POST        201 Created
+R   Read    GET         200 OK
+U   Update  PUT/PATCH   200 OK
+D   Delete  Delete      200 OK/ 204 No Content  
+
+Idempotent -> Performing same operations multiples times produce the same result.
+(i.e Repeating the request does not change the final state of the server.)
+
+HTTP        Method	            Idempotent?	Reason
+GET	        ✅ Yes	            Only reads data
+PUT	        ✅ Yes	            Replaces resource completely
+PATCH	    ❌ Usually No	    Partial update may change state
+DELETE	    ✅ Yes	            Resource remains deleted
+POST	    ❌ No	            Creates new resource each time
+
+Parameters -> are the values send by client to servers for
+    identify resource
+    filter data
+    customize response
+Types: 
+Path Parameters     -> are part of URL to identify specific resoruce         /products/2
+Query Parameters    -> are used to filter, pignation, sort, search data      /products?q=xyz
+Body Parameters     -> JSON in Request Body
+Header Parameters   -> Header in request Authorization
+
+Query Parameters
+Type            Purpose                                   example                         
+search          find data based on keyword                products/search?q=text
+limit           how many data be to return                products?limit=5  
+skip            skip records and return next data         products?skip=1  

@@ -1,4 +1,4 @@
-Postman -> a tool used for API testing.
+Postman -> Postman is an API testing tool used to send HTTP requests, validate responses, and perform manual API testing before automation.
   
 Workspace -> Create a workspace where we can create collection, env etc 
 Collection -> contains number of folders & HTTP request
@@ -48,3 +48,14 @@ Header	                Purpose
 Content-Type	        Response format
 Cache-Control	        Caching rules
 Server	                Server info
+
+Difference between status code
+
+204 No Content vs 404 Not found
+204(No content) -> The request was successfully processed, but there is no response body to return.
+404(Not found)  -> The requested resource does not exist on the server.
+
+401 Unauthorised vs 403 Forbidden
+401(unathorised) -> Authentication is missing or invalid
+403(forbidden)   -> Authentication is valid but access is denied
+

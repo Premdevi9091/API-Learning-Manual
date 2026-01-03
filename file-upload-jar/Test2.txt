@@ -1,0 +1,10 @@
+Using file-upload-RestAPI.jar for testing upload
+run java -jar file-upload-RestAPI.jar in cmd where the file is present in admin mode
+open browser and run http://localhost:8080/
+
+Upload API
+Single -> POST http://localhost:8080/uploadFile
+Multiple -> POST http://localhost:8080/uploadMultipleFiles
+
+
+

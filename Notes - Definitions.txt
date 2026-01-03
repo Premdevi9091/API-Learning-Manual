@@ -67,6 +67,8 @@ Environment     Environment-specific            pm.environments.set("name", "val
 Collection      Collection-only                 pm.collectionVariables.set("name","value")
 Local           Request-only                    pm.variables.set("name","value")
 
+Variables Precedence -> Local > Environment > Collection > Global > Data
+
 Environment -> Environments allow us to manage environment-specific variables like base URL, tokens, 
 and credentials for QA, staging, and production. To avoid hardcoding values and easily switch between 
 environments without changing requests.
@@ -77,3 +79,14 @@ API chaining -> using data of one API response(like token, id) in another API re
 
 Collection Runner -> Collection Runner allows execution of multiple API requests sequentially 
 like an automated test suite.
+
+Authentication -> Authentication is the process of verifying who you are.
+Types:
+
+1. No Auth -> No authentication is required, we can access request without any auth.
+2. API Key -> Required API key to access the request
+3. Bearer token -> Token is used as authentication to access the request
+4. Basic auth -> Username + password is used as authentication, not encrypted
+5. Digest auth -> Username + password is used as authentication and encrypted
+6. Outh 1.0 -> Used 3th party auth tool
+7. Outh 2.0 -> Used 3th party auth tool

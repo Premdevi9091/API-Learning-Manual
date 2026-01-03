@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "466f9dac-9eae-47fb-9632-616620dc2b99",
+		"name": "API-Custom-Chaining",
+		"description": "This collection demonstrates **API chaining** using the **Custom API** (`http://localhost:3000`).\n\n**API chaining** refers to using data from one API response (such as ID) as input for subsequent API requests.\n\nIn this collection:\n\n- URL is stored in **Global** variable\n    \n- A static `Request body` is passed\n    \n- The `studendID` returned from the student creation response is stored as a **collection variable**.\n    \n- This stored `studentID` is reused to:\n    \n    - **Read** the order using **GET**\n        \n    - **Delete** the order using **DELETE**\n        \n\n### Create Your Own API Using JSON Server\n\n1. **Install Node.js** on your system.\n    \n2. commands to check version of node and npm\n    \n    1. `node --version`\n        \n    2. `npm --version`\n        \n3. install json server `npm install -g json-server`\n    \n4. Create a **sample JSON file** (for example: `students.json`) with mock data.\n    \n5. Open the **command prompt** in the folder where the JSON file is located.\n    \n6. `json-server students.json`\n    \n7. JSON Server will automatically create REST API endpoints, allowing you to **perform CRUD operations** (Create, Read, Update, Delete).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21963655"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"student_id\", pm.response.json().id);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Dummy\",\r\n    \"age\": 26,\r\n    \"grade\": \"13th\",\r\n    \"subjects\": [\r\n        \"IT\",\r\n        \"Comm\",\r\n        \"Math\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{global_customURL}}/students",
+					"host": [
+						"{{global_customURL}}"
+					],
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{global_customURL}}/students/{{student_id}}",
+					"host": [
+						"{{global_customURL}}"
+					],
+					"path": [
+						"students",
+						"{{student_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"subjects\": [\r\n        \"IT\"\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "{{global_customURL}}/students/{{student_id}}",
+					"host": [
+						"{{global_customURL}}"
+					],
+					"path": [
+						"students",
+						"{{student_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "student_id",
+			"value": ""
+		}
+	]
+}

@@ -1,0 +1,170 @@
+{
+	"info": {
+		"_postman_id": "d5dc1d7a-cf80-4695-8f26-f9ba846d9b31",
+		"name": "API-Upload-Testing",
+		"description": "This collection demonstrates **file upload API testing**.\n\nThe APIs are tested using **`file-upload-RestAPI.jar`**.\n\n<u><b>Setup Instructions:</b></u>\n\n- Run the application using the command below in **administrator mode** from the directory where the JAR file is located:  \n    `java -jar file-upload-RestAPI.jar`\n    \n- Open a browser and verify the application is running:  \n    [<code>http://localhost:8080/</code>](http://localhost:8080/)\n    \n\n### Upload APIs:\n\n- POST [http://localhost:8080/uploadFile](http://localhost:8080/uploadFile)\n    \n- POST [http://localhost:8080/uploadMultipleFiles](http://localhost:8080/uploadMultipleFiles)\n    \n\n### How to Attach Files in Postman:\n\n- Go to **Body → form-data**\n    \n- **Single File Upload**\n    \n    - Key: `file`\n        \n    - Type: `File`\n        \n- **Multiple File Upload**\n    \n    - Key: `files`\n        \n    - Type: `File`",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21963655"
+	},
+	"item": [
+		{
+			"name": "Single File Upload",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has all required fields\", function(){\r",
+							"    pm.expect(jsonData).to.have.property(\"fileName\");\r",
+							"    pm.expect(jsonData).to.have.property(\"fileDownloadUri\");\r",
+							"    pm.expect(jsonData).to.have.property(\"fileType\");\r",
+							"    pm.expect(jsonData).to.have.property(\"size\");  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"File name validation\", function(){\r",
+							"    pm.expect(jsonData.fileName).to.eql(\"Test2.txt\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time < 500ms\", function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"File type is text/plain\", function () {\r",
+							"    pm.expect(jsonData.fileType).to.equal(\"text/plain\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"file download url validation\", function(){\r",
+							"    pm.expect(jsonData.fileDownloadUri).to.include(\"/downloadFile/\");\r",
+							"    pm.expect(jsonData.fileDownloadUri).to.match(/^http:\\/\\/localhost:8080/);  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"File size validation\", function () {\r",
+							"    pm.expect(jsonData.size).to.be.a(\"number\");\r",
+							"    pm.expect(jsonData.size).to.be.at.least(0);\r",
+							"    pm.expect(jsonData.size).to.be.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/Prem/OneDrive/Desktop/Personal Details/API-Learning/file-upload-jar/Test2.txt"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/uploadFile",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"uploadFile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Multiple File Upload",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has all required fields\", function(){\r",
+							"    for(let i = 0; i < jsonData.size; i++){\r",
+							"        pm.expect(jsonData[i]).to.have.property(\"fileName\");\r",
+							"        pm.expect(jsonData[i]).to.have.property(\"fileDownloadUri\");\r",
+							"        pm.expect(jsonData[i]).to.have.property(\"fileType\");\r",
+							"        pm.expect(jsonData[i]).to.have.property(\"size\");\r",
+							"    }  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"File name validation\", function(){\r",
+							"    pm.expect(jsonData[0].fileName).to.eql(\"Test2.txt\");\r",
+							"    pm.expect(jsonData[1].fileName).to.eql(\"Test3.txt\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time < 500ms\", function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"File type is text/plain\", function () {\r",
+							"    pm.expect(jsonData[0].fileType).to.equal(\"text/plain\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"file download url validation\", function(){\r",
+							"    pm.expect(jsonData[0].fileDownloadUri).to.include(\"/downloadFile/\");\r",
+							"    pm.expect(jsonData[0].fileDownloadUri).to.match(/^http:\\/\\/localhost:8080/);  \r",
+							"});\r",
+							"\r",
+							"pm.test(\"File size validation\", function () {\r",
+							"    pm.expect(jsonData[0].size).to.be.a(\"number\");\r",
+							"    pm.expect(jsonData[0].size).to.be.at.least(0);\r",
+							"    pm.expect(jsonData[0].size).to.be.above(0);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "files",
+							"type": "file",
+							"src": [
+								"/C:/Users/Prem/OneDrive/Desktop/Personal Details/API-Learning/file-upload-jar/Test2.txt",
+								"/C:/Users/Prem/OneDrive/Desktop/Personal Details/API-Learning/file-upload-jar/Test3.txt"
+							]
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/uploadMultipleFiles",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"uploadMultipleFiles"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

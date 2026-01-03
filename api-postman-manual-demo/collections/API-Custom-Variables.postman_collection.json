@@ -1,0 +1,303 @@
+{
+	"info": {
+		"_postman_id": "6f8ea754-b159-4041-a0a0-6166cbc5fbe0",
+		"name": "API-Custom-Variables",
+		"description": "This collection demonstrates the use of **Postman variables** using a **Custom API** (`http://localhost:3000`).\n\n### Variable Types Covered (with explanations):\n\n- **Global Variables**  \n    Accessible across all workspaces, collections, and requests.  \n    **Example**: `global_customURL` is stored as a **global variable**.\n    \n- **Environment Variables**  \n    Scoped to a specific environment and commonly used for environment-specific values.  \n    **Example**: `env_customURL` is stored as an **environment variable**.\n    \n- **Collection Variables**  \n    Available only within the collection and ideal for shared values across requests.  \n    **Example**: `coll_id` is stored as a **collection variable**.\n    \n- **Local Variables**  \n    Available only during the execution of a single request and defined using scripts.  \n    **Example**: `local_url` is set as a **local variable** in the **Pre-request Script**.\n    \n\n**Additional Features:**\n\n- Demonstrates how to **set and unset variables** using scripts.\n    \n\n### Create Your Own API Using JSON Server\n\n1. **Install Node.js** on your system.\n    \n2. commands to check version of node and npm\n    \n    1. `node --version`\n        \n    2. `npm --version`\n        \n3. install json server `npm install -g json-server`\n    \n4. Create a **sample JSON file** (for example: `students.json`) with mock data.\n    \n5. Open the **command prompt** in the folder where the JSON file is located.\n    \n6. `json-server students.json`\n    \n7. JSON Server will automatically create REST API endpoints, allowing you to **perform CRUD operations** (Create, Read, Update, Delete).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21963655"
+	},
+	"item": [
+		{
+			"name": "global variable",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{global_customURL}}/students/{{coll_id}}",
+					"host": [
+						"{{global_customURL}}"
+					],
+					"path": [
+						"students",
+						"{{coll_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "local variable",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set(\"local_url\", \"http://localhost:3000\");"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local_url}}/students",
+					"host": [
+						"{{local_url}}"
+					],
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "set & unset variables",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.set(\"local_url\", \"http://localhost:3000\");"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var json = pm.response.json();\r",
+							"pm.globals.set(\"global_id\", json.id);\r",
+							"pm.collectionVariables.set(\"coll_id\", json.id);\r",
+							"pm.environment.set(\"env_id\", json.id);\r",
+							"pm.variables.set(\"local_id\", json.id);\r",
+							"console.log(pm.variables.get(\"local_id\"));\r",
+							"\r",
+							"pm.globals.unset(\"global_id\");\r",
+							"pm.collectionVariables.unset(\"coll_id\");\r",
+							"pm.environment.unset(\"env_id\");"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local_url}}/students/3",
+					"host": [
+						"{{local_url}}"
+					],
+					"path": [
+						"students",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "collection variable",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{global_customURL}}/students/{{collection_student_id}}",
+					"host": [
+						"{{global_customURL}}"
+					],
+					"path": [
+						"students",
+						"{{collection_student_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Env variable",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{env_customURL}}/students/",
+					"host": [
+						"{{env_customURL}}"
+					],
+					"path": [
+						"students",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"pm.test(\"Collection level\", () => {\r",
+					"    console.log(\"Collection level Pre Request\");\r",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"pm.test(\"Collection level\", () => {\r",
+					"    console.log(\"Collection level Post Response\");\r",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "collection_student_id",
+			"value": ""
+		},
+		{
+			"key": "coll_id",
+			"value": ""
+		}
+	]
+}

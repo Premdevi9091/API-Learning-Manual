@@ -1,0 +1,311 @@
+{
+	"info": {
+		"_postman_id": "a6ef71c6-a514-45f9-bd82-f7f12962a76a",
+		"name": "API-Go REST-Chaining",
+		"description": "This collection demonstrates **API chaining** using the **Go Rest API** ([<code><b>https://gorest.co.in/public/v2/users</b></code>](https://gorest.co.in/public/v2/users)).\n\n**API chaining** refers to using data from one API response (such as a token or ID) as input for subsequent API requests.\n\nIn this collection:\n\n- `gorest_url` is stored in an **collection** variable.\n    \n- A **token is generated using** [Get your access token ](https://gorest.co.in/my-account/access-tokens) Login into it > Token is created and stored in an **collection** variable.\n    \n- The stored token is then used to authorize **CREATE**, **POST, PUT, and DELETE** requests.\n    \n- A **dynamic** `name, email` is generated in the **Pre-request Script** and saved as a **collection variable**.\n    \n- The `user_id` returned from the user creation response is stored as a **collection variable** in the **Post-response script.**\n    \n- This stored `user_id` is reused to:\n    \n    - **Read** the order using **GET**\n        \n    - **Update** the order using **PUT**\n        \n    - **Delete** the order using **DELETE**\n        \n- Also in **DELETE** all the collection variable are **unset**.\n    \n- Basic validation at **REQUEST** level is done(status code, response data).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21963655"
+	},
+	"item": [
+		{
+			"name": "Create User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.collectionVariables.set(\"user_id\", jsonData.id);\r",
+							"    let user_id = pm.collectionVariables.get(\"user_id\");\r",
+							"    let user_name = pm.collectionVariables.get(\"name\");\r",
+							"    let user_email = pm.collectionVariables.get(\"email\");\r",
+							"    console.log(user_id+\" \"+user_name+\" \"+user_email);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function randomString(length){\r",
+							"    return Math.random().toString(36).substring(2, 2 + length);\r",
+							"}\r",
+							"let name = randomString(6);\r",
+							"let email = `${name}@test.com`;\r",
+							"\r",
+							"pm.collectionVariables.set(\"name\", name);\r",
+							"pm.collectionVariables.set(\"email\", email);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{gorest_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"gender\": \"female\",\r\n    \"status\": \"active\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gorest_url}}/public/v2/users",
+					"host": [
+						"{{gorest_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response data validation\", function()  {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.have.eql(pm.collectionVariables.get(\"user_id\"));\r",
+							"    pm.expect(jsonData.name).to.have.eql(pm.collectionVariables.get(\"name\"));\r",
+							"    pm.expect(jsonData.email).to.have.eql(pm.collectionVariables.get(\"email\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{gorest_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gorest_url}}/public/v2/users/{{user_id}}",
+					"host": [
+						"{{gorest_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function randomString(length){\r",
+							"    return Math.random().toString(36).substring(2, 2 + length);\r",
+							"}\r",
+							"let name = randomString(6);\r",
+							"let email = `${name}@test.com`;\r",
+							"\r",
+							"pm.collectionVariables.set(\"name\", name);\r",
+							"pm.collectionVariables.set(\"email\", email);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"email\": \"{{email}}\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{gorest_url}}/public/v2/users/{{user_id}}",
+					"host": [
+						"{{gorest_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 or 204\", function () {\r",
+							"    pm.expect(pm.response.code).to.have.oneOf([200, 204]);\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.unset(\"user_id\");\r",
+							"pm.collectionVariables.unset(\"name\");\r",
+							"pm.collectionVariables.unset(\"email\");\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{gorest_url}}/public/v2/users/{{user_id}}",
+					"host": [
+						"{{gorest_url}}"
+					],
+					"path": [
+						"public",
+						"v2",
+						"users",
+						"{{user_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{gorest_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "gorest_url",
+			"value": ""
+		},
+		{
+			"key": "gorest_token",
+			"value": ""
+		},
+		{
+			"key": "name",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": ""
+		},
+		{
+			"key": "user_id",
+			"value": ""
+		}
+	]
+}

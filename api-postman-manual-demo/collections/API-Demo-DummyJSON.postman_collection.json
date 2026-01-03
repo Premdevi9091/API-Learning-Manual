@@ -1,0 +1,724 @@
+{
+	"info": {
+		"_postman_id": "3dadc38e-b182-4325-9e12-89bfbdaad183",
+		"name": "API-Demo-DummyJSON",
+		"description": "This collection demonstrates comprehensive **API testing using the DummyJSON API** (`https://dummyjson.com`).\n\n### Features Covered:\n\n- **GET Requests**\n    \n    - Retrieve all products\n        \n    - Fetch a single product by ID\n        \n- **POST Requests**\n    \n    - Add a new product\n        \n- **UPDATE Operations**\n    \n    - Update product details using **PUT**\n        \n    - Partially update product details using **PATCH**\n        \n- **DELETE Requests**\n    \n    - Delete a product by ID\n        \n- **Parameter Handling**\n    \n    - Path parameters (specific product)\n        \n    - Query parameters (search and filtering)\n        \n    - Multiple query parameters\n        \n    - Body parameters\n        \n    - Header parameters\n        \n    - Negative scenarios (non-existing product)\n        \n- **Assertions & Validations**\n    \n    - Validate product arrays and pagination metadata\n        \n    - Validate each item in the response array\n        \n    - Search API response validation\n        \n    - Data type consistency checks\n        \n    - Cookie validation\n        \n    - Basic response validations (status code, response time, schema)\n        \n\nThis collection covers **CRUD operations, parameter handling, negative testing, and real-world API assertions**, making it ideal for learning and demonstrating practical API testing skills.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21963655"
+	},
+	"item": [
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "Get Products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Products array size\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.products.length).to.be.above(0);\r",
+									"    console.log(jsonData.products.length);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time less than 1s\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_baseURL}}/products",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Single Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Product ID validation\", function(){\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.has.equal(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type Validation\", function(){\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"))\r",
+									"    .to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Property Validation\", function(){\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"title\");\r",
+									"    pm.expect(jsonData).to.have.property(\"price\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\");  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time <= 1000 ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_baseURL}}/products/{{env_productID}}",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"{{env_productID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "Add Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function(){\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Store product ID in evr variable\", function(){\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.environment.set(\"createdProductID\", jsonData.id);\r",
+									"})"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Test Phone\",\r\n  \"price\": 999\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/add",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "UPDATE",
+			"item": [
+				{
+					"name": "Update Product",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/2",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product Patch",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 200\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/2",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "DELETE",
+			"item": [
+				{
+					"name": "Delete Product",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 200\r\n}"
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/3",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Parameters",
+			"item": [
+				{
+					"name": "Get specific product",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"dummy test 123\",\r\n    \"price\": 2304\r\n}"
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/1",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "not existing product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/{{env_negProductID}}",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"{{env_negProductID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Product",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 200\r\n}"
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/search?q=oppo",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "oppo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Multiple Query Parameters",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 200\r\n}"
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/search?q=phone&limit=4&skip=4",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "phone"
+								},
+								{
+									"key": "limit",
+									"value": "4"
+								},
+								{
+									"key": "skip",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Body Parameters",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"dummy test 123\",\r\n    \"price\": 2304\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/add",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Header Parameters",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true,
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{env_baseURL}}/products/1",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "Using for practising Parameters\n\n1. Path Params\n    \n2. Query Params\n    \n3. Body Params\n    \n4. Header Params"
+		},
+		{
+			"name": "Assertions Example",
+			"item": [
+				{
+					"name": "API should return products array and pagination metadata",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//API should return products array and pagination metadata.\r",
+									"pm.test(\"API should return products array and pagination metadata\", function(){\r",
+									"    const json = pm.response.json();\r",
+									"    pm.response.to.have.status(200);\r",
+									"    pm.expect(json).to.have.property(\"products\");\r",
+									"    pm.expect(json).to.have.property(\"total\");\r",
+									"    pm.expect(json).to.have.property(\"limit\");\r",
+									"    pm.expect(json).to.have.property(\"skip\");\r",
+									"    pm.expect(json.products).to.be.an(\"array\");\r",
+									"    \r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_baseURL}}/products",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate Each Item in Array",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validate Each Item in Array\r",
+									"//Each product must have id, title, and price.\r",
+									"pm.test(\"Validate Each Item in Array\", function () {\r",
+									"    const jsonProducts = pm.response.json().products;\r",
+									"    pm.response.to.have.status(200);\r",
+									"    jsonProducts.forEach(product => {\r",
+									"        pm.expect(product).to.have.property('id');\r",
+									"        pm.expect(product).to.have.property('title');\r",
+									"        pm.expect(product).to.have.property('price');\r",
+									"        pm.expect(product.price).to.have.above(0);\r",
+									"    })\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_baseURL}}/products",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search API Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Search API Validation\r",
+									"pm.test(\"Search API Validation in keyword in title and description\", function(){\r",
+									"    pm.response.to.have.status(200);\r",
+									"    const products = pm.response.json().products;\r",
+									"    products.forEach(product => {\r",
+									"        const text = (product.title +\" \" + product.description).toLowerCase();\r",
+									"        pm.expect(text).to.include('phone');\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_baseURL}}/products/search?q=phone",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"search"
+							],
+							"query": [
+								{
+									"key": "q",
+									"value": "phone"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Validate Data Type Consistency",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//Validate Data Type Consistency\r",
+									"// pm.test(\"Data Type Consistency\", function () {\r",
+									"//     const json = pm.response.json();\r",
+									"//     pm.expect(json.id).to.be.a('number');\r",
+									"//     //pm.expect(json.title).to.be.a(\"string\");\r",
+									"//     pm.expect(json.description).to.be.a('string');\r",
+									"//     pm.expect(json.price).to.be.a('number');\r",
+									"    \r",
+									"// });\r",
+									"\r",
+									"pm.test(\"Data types are correct\", function () {\r",
+									"    const json = pm.response.json();\r",
+									"    pm.expect(json.id).to.be.a(\"number\");\r",
+									"    pm.expect(json.title).to.be.a(\"string\");\r",
+									"    pm.expect(json.price).to.be.a(\"number\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_baseURL}}/products",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cookies validation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_baseURL}}/products",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Basic Validation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Product ID validation\", function(){\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.id).to.has.equal(2);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type Validation\", function(){\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\"))\r",
+									"    .to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Property Validation\", function(){\r",
+									"    let jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property(\"title\");\r",
+									"    pm.expect(jsonData).to.have.property(\"price\");\r",
+									"    pm.expect(jsonData).to.have.property(\"description\");  \r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time <= 1000 ms\", function(){\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{env_baseURL}}/products/{{env_productID}}",
+							"host": [
+								"{{env_baseURL}}"
+							],
+							"path": [
+								"products",
+								"{{env_productID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

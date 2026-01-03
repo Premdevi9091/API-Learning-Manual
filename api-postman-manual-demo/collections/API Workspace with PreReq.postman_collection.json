@@ -1,0 +1,184 @@
+{
+	"info": {
+		"_postman_id": "ec9bc2a0-5920-468e-9b3c-082874ad31af",
+		"name": "API Workspace with PreReq",
+		"description": "This collection demonstrates the **execution workflow of scripts in Postman**.\n\n<u><i><b>Order of Script Execution:</b></i></u>\n\n1. **Collection Pre-request Script**\n    \n2. **Folder Pre-request Script**\n    \n3. **Request Pre-request Script**\n    \n4. **Collection Post-response Script**\n    \n5. **Folder Post-response Script**\n    \n6. **Request Post-response Script**\n    \n\nThis execution order helps control how variables are set, modified, and validated at different levels during API testing.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21963655"
+	},
+	"item": [
+		{
+			"name": "Folder-level",
+			"item": [
+				{
+					"name": "Get",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.test(\"Request level\", () => {\r",
+									"    console.log(\"Request level Pre Request\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Request level test\", () =>{\r",
+									"    console.log(\"request level post response\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_customURL}}/students/",
+							"host": [
+								"{{env_customURL}}"
+							],
+							"path": [
+								"students",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Request level test\", () =>{\r",
+									"    pm.response.to.have.status(201);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"pm.test(\"Request level\", () => {\r",
+									"    console.log(\"Request level Pre Request\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Dummy\",\r\n    \"age\": 26,\r\n    \"grade\": \"13th\",\r\n    \"subjects\": [\r\n        \"IT\",\r\n        \"Comm\",\r\n        \"Math\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{env_customURL}}/students",
+							"host": [
+								"{{env_customURL}}"
+							],
+							"path": [
+								"students"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							"pm.test(\"Folder level\", () => {\r",
+							"    console.log(\"Folder level Pre Request\");\r",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {},
+						"exec": [
+							"pm.test(\"Folder level\", () => {\r",
+							"    console.log(\"Folder level Post Response\");\r",
+							"});"
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"pm.test(\"Collection level\", () => {\r",
+					"    console.log(\"Collection level Pre Request\");\r",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					"pm.test(\"Collection level\", () => {\r",
+					"    console.log(\"Collection level Post Response\");\r",
+					"});"
+				]
+			}
+		}
+	]
+}

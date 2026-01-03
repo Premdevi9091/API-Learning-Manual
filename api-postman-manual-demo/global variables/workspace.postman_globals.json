@@ -1,0 +1,27 @@
+{
+	"id": "690feed7-8181-440c-8362-440dadf5b898",
+	"values": [
+		{
+			"key": "global_baseURL",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "global_customURL",
+			"value": "",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "global_id",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2026-01-03T09:54:31.384Z",
+	"_postman_exported_using": "Postman/11.77.2"
+}

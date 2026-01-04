@@ -29,13 +29,3 @@ Day	Topic	            What to Do (Checklist)	                        Output
 28	API Strategy	    Test pyramid, best practices	                Design clarity
 29	Interview Qs	    Prepare API interview Q&A	                    Interview ready
 30	Revision	        Revise framework & concepts	                    Confidence boost
-
-
-Create your own API
-1. Install Node JS
-2. check node --version and npm --version in cmd 
-3. run cmd -> npm install -g json-server
-4. Create sample JSON file 
-5. Open that file in CMD 
-6. Run json-server file_name
-7. EndPoint will be created -> you can create your own API and perform CRUD

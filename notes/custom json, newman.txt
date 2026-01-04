@@ -1,0 +1,36 @@
+Create your own API
+
+1. Install Node JS
+2. check node --version and npm --version in cmd 
+3. run cmd -> npm install -g json-server
+4. Create sample JSON file 
+5. Open that file in CMD 
+6. Run json-server file_name
+7. EndPoint will be created -> you can create your own API and perform CRUD
+
+How to run API collection in cmd
+1. Install Node JS
+2. check node --version and npm --version in cmd 
+3. run cmd -> npm install -g newman
+4. run cmd where collection/env var/ global file is store
+    newman run <path>\<collection_name>.json 
+    -e <path>\<envir varibale>.json
+    -g <path>\<global varibale>.json
+
+ex 1: newman run collections\API-Books-Chaining.postman_collection.json 
+      -e enviroments_variables\API Demo ENV.postman_environment.json
+ex 2: newman run API-Books-Chaining.postman_collection.json 
+      -e API Demo ENV.postman_environment.json
+
+How to run generate HTML report
+1. run cmd -> npm install -g newman-reporter-html
+2. run cmd where collection/env var/ global file is store
+    newman run <path>\<collection_name>.json 
+    -e <path>\<envir varibale>.json
+    -g <path>\<global varibale>.json
+    -r html
+
+ex: newman run collections\API-Books-Chaining.postman_collection.json 
+    -e enviroments_variables\API-Demo-ENV.postman_environment.json 
+    -r html
+3. Open the folder new folder with newman is created with html report

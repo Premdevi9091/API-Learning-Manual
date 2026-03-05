@@ -1,36 +1,106 @@
-Create your own API
+==============================
+CREATE YOUR OWN API
+==============================
+
+1. Install Node JS from:
+   https://nodejs.org
+
+2. Check installation in CMD:
+
+   node --version
+   npm --version
+
+3. Install json-server:
+
+   npm install -g json-server
+
+4. Create a sample JSON file (example: db.json)
+
+   Example content:
+
+   {
+     "books": [
+       { "id": 1, "title": "API Testing Basics", "author": "John" },
+       { "id": 2, "title": "Automation Testing", "author": "Jane" }
+     ]
+   }
+
+5. Open CMD in the folder where the JSON file is located.
+
+6. Run the API server:
+
+   json-server db.json
+
+7. API endpoint will be created automatically.
+
+   Example:
+   http://localhost:3000/books
+
+You can now perform CRUD operations using Postman or browser.
+
+--------------------------------------------------
+
+==============================
+RUN POSTMAN COLLECTION USING CMD
+==============================
 
 1. Install Node JS
-2. check node --version and npm --version in cmd 
-3. run cmd -> npm install -g json-server
-4. Create sample JSON file 
-5. Open that file in CMD 
-6. Run json-server file_name
-7. EndPoint will be created -> you can create your own API and perform CRUD
 
-How to run API collection in cmd
-1. Install Node JS
-2. check node --version and npm --version in cmd 
-3. run cmd -> npm install -g newman
-4. run cmd where collection/env var/ global file is store
-    newman run <path>\<collection_name>.json 
-    -e <path>\<envir varibale>.json
-    -g <path>\<global varibale>.json
+2. Check installation:
 
-ex 1: newman run collections\API-Books-Chaining.postman_collection.json 
-      -e enviroments_variables\API Demo ENV.postman_environment.json
-ex 2: newman run API-Books-Chaining.postman_collection.json 
-      -e API Demo ENV.postman_environment.json
+   node --version
+   npm --version
 
-How to run generate HTML report
-1. run cmd -> npm install -g newman-reporter-html
-2. run cmd where collection/env var/ global file is store
-    newman run <path>\<collection_name>.json 
-    -e <path>\<envir varibale>.json
-    -g <path>\<global varibale>.json
-    -r html
+3. Install Newman (Postman CLI tool):
 
-ex: newman run collections\API-Books-Chaining.postman_collection.json 
-    -e enviroments_variables\API-Demo-ENV.postman_environment.json 
-    -r html
-3. Open the folder new folder with newman is created with html report
+   npm install -g newman
+
+4. Navigate to the folder where your files are stored:
+   - Collection file
+   - Environment file
+   - Global variables file
+
+5. Run the collection using command:
+
+   newman run <path>\<collection_name>.json
+   -e <path>\<environment_variable>.json
+   -g <path>\<global_variable>.json
+
+Example 1:
+
+   newman run collections\API-Books-Chaining.postman_collection.json
+   -e environment_variables\API Demo ENV.postman_environment.json
+
+Example 2 (if files are in same folder):
+
+   newman run API-Books-Chaining.postman_collection.json
+   -e API Demo ENV.postman_environment.json
+
+--------------------------------------------------
+
+==============================
+GENERATE HTML REPORT USING NEWMAN
+==============================
+
+1. Install HTML reporter:
+
+   npm install -g newman-reporter-html
+
+2. Navigate to the folder where collection and environment files are stored.
+
+3. Run the command:
+
+   newman run <collection_name>.json
+   -e <environment_file>.json
+   -g <global_file>.json
+   -r html
+
+Example:
+
+   newman run collections\API-Books-Chaining.postman_collection.json
+   -e environment_variables\API-Demo-ENV.postman_environment.json
+   -r html
+
+4. After execution, a new folder will be created containing the HTML report.
+
+5. Open the HTML file in your browser to view the test report.

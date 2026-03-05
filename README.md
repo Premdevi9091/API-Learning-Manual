@@ -188,7 +188,7 @@ Concepts demonstrated:
 ### 1️⃣ Clone the Repository
 
 ```
-git clone https://github.com/<your-username>/API-Learning-Manual.git
+git clone git@github.com:Premdevi9091/API-Learning-Manual.git
 ```
 
 ---
@@ -249,44 +249,8 @@ This repository is helpful for:
 
 ---
 
-# 🏷 GitHub Topics
-
-Add these topics to your repository:
-
-```
-api-testing
-manual-api-testing
-postman
-rest-api
-qa-learning
-api-testing-basics
-software-testing
-postman-api
-api-learning
-qa-beginners
-```
-
----
-
-# 📌 Repository Description (GitHub)
-
-Use this for your **GitHub repository description**:
-
-> Beginner-friendly repository for learning manual API testing using Postman with examples, notes, and file upload API demonstrations.
-
----
-
 # 👨‍💻 Author
 
-**<Your Name>**
+**Premdevi Kumawat**
 
-QA Automation Engineer | API & UI Test Automation
-
-Technologies:
-
-Java • RestAssured • Postman • Playwright • TestNG • Cucumber • Jenkins
-
-LinkedIn  
-https://linkedin.com/in/<your-linkedin>
-
----
+QA Automation Engineer
